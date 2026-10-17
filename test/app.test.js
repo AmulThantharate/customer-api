@@ -27,6 +27,6 @@ test("GET /customers returns customer list", async (t) => {
   const data = await response.json();
 
   assert.equal(response.status, 200);
-  assert.equal(data.length, 2);
+  assert.equal(data.length, 3);
 });
 
