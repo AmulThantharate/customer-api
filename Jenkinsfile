@@ -66,11 +66,7 @@ pipeline {
                         error("Invalid environment: ${environment}")
                     }
 
-                    def environments = ['dev', 'qa', 'prod']
-
-                    environments.each { envName ->
-                        echo "Processing environment: ${envName}"
-                    }
+                    echo "Processing environment: ${environment}"
 
                     echo 'Deployment simulation completed.'
                     echo 'No actual deployment was performed.'
