@@ -23,7 +23,7 @@ pipeline {
            steps {
              script {
                env.GIT_COMMIT_SHA = sh(
-                    script: "git rev-parse HEAD",
+                    script: "git rev-parse --short HEAD",
                     returnStdout: true
                ).trim()
              }
@@ -89,8 +89,7 @@ pipeline {
            steps {
              script {
                 sh """
-                    docker build -t customer-api:${GIT_COMMIT_SHA} .
-                    // docker run -d -p 3000:3000 --name customer-api-test customer-api:${GIT_COMMIT_SHA}
+                    docker build -t customer-api:${env.GIT_COMMIT_SHA} .
                 """
              }
            }
