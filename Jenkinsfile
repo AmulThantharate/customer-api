@@ -10,6 +10,11 @@ pipeline {
         )
     }
 
+    environment {
+        GIT_COMMIT_SHA = sh(script: "git commit --header='\\n' \"${GIT_COMMIT_MESSAGE}\" -C ${GIT_COMMIT} -n --pretty=format:'%h'", returnStdout: true).trim()
+    }
+
+
     stages {
         stage('Checkout') {
             steps {
@@ -77,8 +82,8 @@ pipeline {
            steps {
              script {
                 sh """
-                    docker build -t customer-api .
-                    docker run -d -p 3000:3000 --name customer-api-test customer-api 
+                    docker build -t customer-api:${GIT_COMMIT_SHA} .
+                    docker run -d -p 3000:3000 --name customer-api-test customer-api:${GIT_COMMIT_SHA}
                 """
              }
            }
