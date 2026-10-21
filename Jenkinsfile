@@ -73,6 +73,16 @@ pipeline {
                 }
             }
         }
+        stage("Docker build and run") {
+           steps {
+             script {
+                sh """
+                    docker build -t customer-api .
+                    docker run -d -p 3000:3000 --name customer-api-test customer-api 
+                """
+             }
+           }
+        }
     }
 
     post {
