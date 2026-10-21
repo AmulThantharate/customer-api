@@ -19,6 +19,18 @@ pipeline {
             }
         }
 
+        stage("Get a git commit sha"){
+           steps {
+             script {
+               env.GIT_COMMIT_SHA = sh(
+                    script: "git rev-parse HEAD",
+                    returnStdout: true
+               ).trim()
+             }
+             echo "GIT_COMMIT_SHA: ${env.GIT_COMMIT_SHA}"
+           }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -78,7 +90,7 @@ pipeline {
              script {
                 sh """
                     docker build -t customer-api:${GIT_COMMIT_SHA} .
-                    docker run -d -p 3000:3000 --name customer-api-test customer-api:${GIT_COMMIT_SHA}
+                    // docker run -d -p 3000:3000 --name customer-api-test customer-api:${GIT_COMMIT_SHA}
                 """
              }
            }
