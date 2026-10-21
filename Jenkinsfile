@@ -86,18 +86,18 @@ pipeline {
             }
         }
         stage("Docker Build Image and Push") {
-          steps {
-            scripts {
-              docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_CRED') {
-                def applicationName = 'customer-api'
-                def commitSHA = env.GIT_COMMIT_SHA
-                sh """
-                    docker build -t ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA} .
-                    docker push ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA}
-                """
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_CRED') {
+                        def applicationName = 'customer-api'
+                        def commitSHA = env.GIT_COMMIT_SHA
+                        sh """
+                            docker build -t ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA} .
+                            docker push ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA}
+                        """
+                    }
+                }
             }
-          }
         }
     }
-}
 }
