@@ -85,26 +85,18 @@ pipeline {
                 }
             }
         }
-        stage("Docker build and run") {
-           steps {
-             script {
+        stage("Docker Build Image and Push") {
+          steps {
+            scripts {
+              docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_CRED') {
+                def applicationName = 'customer-api'
+                def commitSHA = env.GIT_COMMIT_SHA
                 sh """
-                    docker build -t customer-api:${env.GIT_COMMIT_SHA} .
+                    docker build -t ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA} .
+                    docker push ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA}
                 """
-             }
-           }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully.'
-        }
-        failure {
-            echo 'Pipeline failed. Check console output.'
-        }
-        always {
-            echo 'Pipeline execution finished.'
+            }
+          }
         }
     }
 }
