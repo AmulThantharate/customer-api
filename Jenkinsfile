@@ -88,12 +88,19 @@ pipeline {
         stage("Docker Build Image and Push") {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_CRED') {
-                        def applicationName = 'customer-api'
-                        def commitSHA = env.GIT_COMMIT_SHA
+                    def applicationName = 'customer-api'
+                    def commitSHA = env.GIT_COMMIT_SHA
+                    def registry = env.DOCKER_REGISTRY ?: 'docker.io'
+
+                    withCredentials([usernamePassword(
+                        credentialsId: 'DOCKER_CRED',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
                         sh """
-                            docker build -t ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA} .
-                            docker push ${env.DOCKER_REGISTRY}/${applicationName}:${commitSHA}
+                            echo "\$DOCKER_PASS" | docker login ${registry} -u "\$DOCKER_USER" --password-stdin
+                            docker build -t ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA} .
+                            docker push ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA}
                         """
                     }
                 }
