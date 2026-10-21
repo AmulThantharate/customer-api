@@ -10,11 +10,6 @@ pipeline {
         )
     }
 
-    environment {
-        GIT_COMMIT_SHA = sh(script: "git commit --header='\\n' \"${GIT_COMMIT_MESSAGE}\" -C ${GIT_COMMIT} -n --pretty=format:'%h'", returnStdout: true).trim()
-    }
-
-
     stages {
         stage('Checkout') {
             steps {
