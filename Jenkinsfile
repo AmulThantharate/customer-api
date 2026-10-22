@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -103,6 +102,18 @@ pipeline {
                             docker push ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA}
                         """
                     }
+                }
+            }
+        }
+        stage("Run the Container") {
+            steps{
+                script {
+                  sh """
+                    docker run -d --name customer-api \
+                    -p 3000:3000 \
+                    --name cst 
+                    ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA}
+                  """
                 }
             }
         }
