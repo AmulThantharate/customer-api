@@ -89,7 +89,6 @@ pipeline {
                 script {
                     def applicationName = 'customer-api'
                     def commitSHA = env.GIT_COMMIT_SHA
-                    def registry = env.DOCKER_REGISTRY ?: 'docker.io'
 
                     withCredentials([usernamePassword(
                         credentialsId: 'DOCKER_CRED',
@@ -97,9 +96,9 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )]) {
                         sh """
-                            echo "\$DOCKER_PASS" | docker login ${registry} -u "\$DOCKER_USER" --password-stdin
-                            docker build -t ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA} .
-                            docker push ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA}
+                          docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                          doker build -t ${DOCKER_USER}/${applicationName}:${commitSHA} .
+                          docker push ${DOCKER_USER}/${applicationName}:${commitSHA}
                         """
                     }
                 }
