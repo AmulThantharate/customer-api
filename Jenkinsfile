@@ -112,6 +112,7 @@ pipeline {
             steps{
                 script {
                   def applicationName = 'customer-api'
+                  def commitSHA = env.GIT_COMMIT_SHA
                   sh """
                       docker run -d -p 8080:8080 --name ${applicationName} ${env.DOCKER_USER}/${applicationName}:${commitSHA}
                   """
