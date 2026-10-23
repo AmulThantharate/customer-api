@@ -114,6 +114,8 @@ pipeline {
                   def applicationName = 'customer-api'
                   def commitSHA = env.GIT_COMMIT_SHA
                   sh """
+                      docker stop ${applicationName} || true
+                      docker rm ${applicationName} || true
                       docker run -d -p 3000:3000 --name ${applicationName} ${env.DOCKER_USER}/${applicationName}:${commitSHA}
                   """
                 }
