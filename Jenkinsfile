@@ -9,6 +9,10 @@ pipeline {
         )
     }
 
+    environment {
+      DOCKER_USER = "claw4321"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -109,7 +113,7 @@ pipeline {
                 script {
                   def applicationName = 'customer-api'
                   sh """
-                      docker run -d -p 8080:8080 --name ${applicationName} ${DOCKER_USER}/${applicationName}:${commitSHA}
+                      docker run -d -p 8080:8080 --name ${applicationName} ${env.DOCKER_USER}/${applicationName}:${commitSHA}
                   """
                 }
             }
