@@ -97,7 +97,7 @@ pipeline {
                     )]) {
                         sh """
                           docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-                          doker build -t ${DOCKER_USER}/${applicationName}:${commitSHA} .
+                          docker build -t ${DOCKER_USER}/${applicationName}:${commitSHA} .
                           docker push ${DOCKER_USER}/${applicationName}:${commitSHA}
                         """
                     }
