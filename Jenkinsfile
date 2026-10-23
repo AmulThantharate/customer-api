@@ -107,6 +107,7 @@ pipeline {
         stage("Run the Container") {
             steps{
                 script {
+                  def applicationName = 'customer-api'
                   sh """
                       docker run -d -p 8080:8080 --name ${applicationName} ${DOCKER_USER}/${applicationName}:${commitSHA}
                   """
