@@ -108,10 +108,7 @@ pipeline {
             steps{
                 script {
                   sh """
-                    docker run -d --name customer-api \
-                    -p 3000:3000 \
-                    --name cst 
-                    $DOCKER_USER/customer-api:${commitSHA}
+                      docker run -d -p 8080:8080 --name ${applicationName} ${DOCKER_USER}/${applicationName}:${commitSHA}
                   """
                 }
             }
