@@ -111,7 +111,7 @@ pipeline {
                     docker run -d --name customer-api \
                     -p 3000:3000 \
                     --name cst 
-                    ${registry}/\$DOCKER_USER/${applicationName}:${commitSHA}
+                    $DOCKER_USER/customer-api:${commitSHA}
                   """
                 }
             }
